@@ -2,7 +2,7 @@ groups:
   - name: ha_alerts
     rules:
       - alert: ApiInstanceDown
-        expr: haproxy_server_status{proxy="apis"} == 0
+        expr: haproxy_server_up{backend="apis"} == 0
         for: 1m
         labels:
           severity: p3
@@ -11,7 +11,7 @@ groups:
           description: "HAProxy backend {{ $labels.server }} is down."
 
       - alert: ApiCapacityReduced
-        expr: sum(haproxy_server_status{proxy="apis"}) < 2
+        expr: sum(haproxy_server_up{backend="apis"}) < 2
         for: 1m
         labels:
           severity: p2
@@ -20,7 +20,7 @@ groups:
           description: "Less than 2 healthy API backends remain."
 
       - alert: AllApiDown
-        expr: sum(haproxy_server_status{proxy="apis"}) == 0
+        expr: sum(haproxy_server_up{backend="apis"}) == 0
         for: 30s
         labels:
           severity: p1

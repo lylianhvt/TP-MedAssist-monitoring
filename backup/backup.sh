@@ -5,7 +5,7 @@ BACKUP_FILE="$BACKUP_DIR/medassist-$(date +%Y%m%d%H%M%S).sql"
 START=$(date +%s)
 mkdir -p "$BACKUP_DIR"
 
-mysqldump -h mysql -u medassist -pmedassist medassist > "$BACKUP_FILE" 2>/tmp/backup_error.log && STATUS=0 || STATUS=1
+mysqldump --skip-ssl --no-tablespaces -h mysql -u medassist -pmedassist medassist > "$BACKUP_FILE" 2>/tmp/backup_error.log && STATUS=0 || STATUS=1
 SIZE=$(stat -c %s "$BACKUP_FILE" 2>/dev/null || echo 0)
 DURATION=$(($(date +%s) - $START))
 TIMESTAMP=$(date +%s)
