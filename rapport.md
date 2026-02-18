@@ -311,7 +311,7 @@ Tests realises:
 - SLI anciennete: `time() - mysql_backup_last_timestamp`
 - SLO RPO: <= 30 minutes
 - SLO execution: >= 99% de succes
-
+nroma
 ---
 
 ## 9. Strategie de sauvegarde, RPO/RTO
