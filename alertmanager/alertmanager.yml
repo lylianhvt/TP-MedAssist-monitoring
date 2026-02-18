@@ -1,0 +1,33 @@
+route:
+  group_by: ["alertname", "severity"]
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 1h
+  receiver: "p4_webhook"
+  routes:
+    - match:
+        severity: p1
+      receiver: "p1_webhook"
+    - match:
+        severity: p2
+      receiver: "p2_webhook"
+    - match:
+        severity: p3
+      receiver: "p3_webhook"
+    - match:
+        severity: p4
+      receiver: "p4_webhook"
+
+receivers:
+  - name: "p1_webhook"
+    webhook_configs:
+      - url: "http://api:5000/api/webhook/alert"
+  - name: "p2_webhook"
+    webhook_configs:
+      - url: "http://api:5000/api/webhook/alert"
+  - name: "p3_webhook"
+    webhook_configs:
+      - url: "http://api:5000/api/webhook/alert"
+  - name: "p4_webhook"
+    webhook_configs:
+      - url: "http://api:5000/api/webhook/alert"

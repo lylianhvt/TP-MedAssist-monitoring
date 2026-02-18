@@ -1,0 +1,45 @@
+{
+  "title": "MySQL Backups Monitoring",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Dernier statut backup",
+      "targets": [{"expr": "mysql_backup_status", "legendFormat": "status"}],
+      "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0}
+    },
+    {
+      "type": "stat",
+      "title": "Taille dernière sauvegarde (octets)",
+      "targets": [{"expr": "mysql_backup_size_bytes", "legendFormat": "size"}],
+      "gridPos": {"h": 4, "w": 6, "x": 6, "y": 0}
+    },
+    {
+      "type": "stat",
+      "title": "Durée dernière sauvegarde (s)",
+      "targets": [{"expr": "mysql_backup_duration_seconds", "legendFormat": "duration"}],
+      "gridPos": {"h": 4, "w": 6, "x": 12, "y": 0}
+    },
+    {
+      "type": "stat",
+      "title": "Timestamp dernière sauvegarde",
+      "targets": [{"expr": "mysql_backup_last_timestamp", "legendFormat": "timestamp"}],
+      "gridPos": {"h": 4, "w": 6, "x": 18, "y": 0}
+    },
+    {
+      "type": "graph",
+      "title": "Historique taille sauvegarde",
+      "targets": [{"expr": "mysql_backup_size_bytes", "legendFormat": "size"}],
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4}
+    },
+    {
+      "type": "graph",
+      "title": "Historique durée sauvegarde",
+      "targets": [{"expr": "mysql_backup_duration_seconds", "legendFormat": "duration"}],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4}
+    }
+  ],
+  "schemaVersion": 27,
+  "version": 1,
+  "refresh": "10s",
+  "datasource": null
+}

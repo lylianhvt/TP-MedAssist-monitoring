@@ -1,0 +1,85 @@
+groups:
+  - name: infra_and_api_alerts
+    rules:
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+        for: 5m
+        labels:
+          severity: p2
+        annotations:
+          summary: "CPU usage above 90%"
+          description: "Node {{ $labels.instance }} has sustained high CPU usage."
+
+      - alert: HighMemoryUsage
+        expr: 100 * (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) > 90
+        for: 5m
+        labels:
+          severity: p3
+        annotations:
+          summary: "Memory usage above 90%"
+          description: "Node {{ $labels.instance }} has high memory pressure."
+
+      - alert: HighLoadAverage
+        expr: node_load1 > 4
+        for: 10m
+        labels:
+          severity: p4
+        annotations:
+          summary: "Load average is elevated"
+          description: "Node {{ $labels.instance }} load is above threshold."
+
+      - alert: ApiLatencyP95High
+        expr: histogram_quantile(0.95, sum(rate(flask_http_request_duration_seconds_bucket[5m])) by (le, endpoint)) > 0.8
+        for: 5m
+        labels:
+          severity: p2
+        annotations:
+          summary: "API p95 latency too high"
+          description: "API endpoint {{ $labels.endpoint }} has p95 latency > 800ms."
+
+      - alert: ApiErrorRateHigh
+        expr: (sum(rate(flask_http_request_total{status=~"5.."}[5m])) / sum(rate(flask_http_request_total[5m]))) > 0.05
+        for: 5m
+        labels:
+          severity: p2
+        annotations:
+          summary: "API error rate above 5%"
+          description: "HTTP 5xx ratio is above 5% on MedAssist API."
+
+  - name: backup_alerts
+    rules:
+      - alert: MysqlBackupFailed
+        expr: mysql_backup_status == 1
+        for: 1m
+        labels:
+          severity: p1
+        annotations:
+          summary: "MySQL backup failed"
+          description: "Latest MySQL backup execution failed."
+
+      - alert: MysqlBackupTooOld
+        expr: time() - mysql_backup_last_timestamp > 1800
+        for: 5m
+        labels:
+          severity: p2
+        annotations:
+          summary: "MySQL backup RPO breached"
+          description: "No successful backup for more than 30 minutes."
+
+      - alert: MysqlBackupSizeAnomaly
+        expr: mysql_backup_size_bytes < 10000
+        for: 5m
+        labels:
+          severity: p3
+        annotations:
+          summary: "MySQL backup size anomaly"
+          description: "Backup size is unexpectedly small."
+
+      - alert: MysqlBackupMetricsMissing
+        expr: absent(mysql_backup_last_timestamp)
+        for: 10m
+        labels:
+          severity: p3
+        annotations:
+          summary: "Backup metrics missing"
+          description: "Pushgateway has not received backup metrics."

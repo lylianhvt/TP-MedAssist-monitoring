@@ -1,0 +1,38 @@
+groups:
+  - name: ha_alerts
+    rules:
+      - alert: ApiInstanceDown
+        expr: haproxy_server_status{proxy="apis"} == 0
+        for: 1m
+        labels:
+          severity: p3
+        annotations:
+          summary: "One API instance is down"
+          description: "HAProxy backend {{ $labels.server }} is down."
+
+      - alert: ApiCapacityReduced
+        expr: sum(haproxy_server_status{proxy="apis"}) < 2
+        for: 1m
+        labels:
+          severity: p2
+        annotations:
+          summary: "API capacity reduced"
+          description: "Less than 2 healthy API backends remain."
+
+      - alert: AllApiDown
+        expr: sum(haproxy_server_status{proxy="apis"}) == 0
+        for: 30s
+        labels:
+          severity: p1
+        annotations:
+          summary: "All API instances are down"
+          description: "No API backend is available behind HAProxy."
+
+      - alert: HaproxyExporterDown
+        expr: up{job="haproxy"} == 0
+        for: 2m
+        labels:
+          severity: p4
+        annotations:
+          summary: "HAProxy metrics unavailable"
+          description: "Prometheus cannot scrape HAProxy exporter."

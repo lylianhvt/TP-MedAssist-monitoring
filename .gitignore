@@ -1,0 +1,20 @@
+# Runtime / volumes
+mysql_data/
+
+# Grafana runtime data (generated at startup)
+grafana/grafana.db
+grafana/plugins/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Logs / temp
+*.log
+*.tmp
+*.swp
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
