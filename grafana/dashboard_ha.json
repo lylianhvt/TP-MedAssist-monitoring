@@ -3,37 +3,51 @@
   "panels": [
     {
       "type": "stat",
-      "title": "Backends actifs",
-      "targets": [{"expr": "haproxy_server_status{proxy=\"apis\"}", "legendFormat": "{{server}}"}],
+      "title": "Instances actives (sur 3)",
+      "targets": [
+        {
+          "expr": "sum(haproxy_server_up{backend=\"apis\"})",
+          "legendFormat": "actives"
+        }
+      ],
       "gridPos": {"h": 4, "w": 8, "x": 0, "y": 0}
     },
     {
-      "type": "stat",
-      "title": "Nombre de basculements",
-      "targets": [{"expr": "haproxy_server_check_failures_total{proxy=\"apis\"}", "legendFormat": "{{server}}"}],
-      "gridPos": {"h": 4, "w": 8, "x": 8, "y": 0}
-    },
-    {
-      "type": "stat",
-      "title": "Santé individuelle",
-      "targets": [{"expr": "haproxy_server_check_status{proxy=\"apis\"}", "legendFormat": "{{server}}"}],
-      "gridPos": {"h": 4, "w": 8, "x": 16, "y": 0}
+      "type": "graph",
+      "title": "Sante individuelle des backends",
+      "targets": [
+        {
+          "expr": "haproxy_server_up{backend=\"apis\"}",
+          "legendFormat": "{{server}}"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 12, "x": 8, "y": 0}
     },
     {
       "type": "graph",
-      "title": "Taux de requêtes API",
-      "targets": [{"expr": "sum(rate(flask_http_request_total[1m])) by (instance)", "legendFormat": "{{instance}}"}],
+      "title": "Basculements (echecs de checks sur 1h)",
+      "targets": [
+        {
+          "expr": "increase(haproxy_server_check_failures_total{backend=\"apis\"}[1h])",
+          "legendFormat": "{{server}}"
+        }
+      ],
       "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4}
     },
     {
       "type": "graph",
-      "title": "Erreurs API (5xx)",
-      "targets": [{"expr": "sum(rate(flask_http_request_total{status=\"500\"}[1m])) by (instance)", "legendFormat": "{{instance}}"}],
-      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4}
+      "title": "Echecs cumules des health checks",
+      "targets": [
+        {
+          "expr": "haproxy_server_check_failures_total{backend=\"apis\"}",
+          "legendFormat": "{{server}}"
+        }
+      ],
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
     }
   ],
   "schemaVersion": 27,
-  "version": 1,
+  "version": 2,
   "refresh": "10s",
   "datasource": null
 }

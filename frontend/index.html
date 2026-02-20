@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>MedAssist Monitoring</title>
+    <style>
+      :root {
+        --bg-1: #0f1724;
+        --bg-2: #1e3a5f;
+        --card: #f7fbff;
+        --ink: #122033;
+        --accent: #07b38a;
+        --accent-2: #0d84ff;
+        --muted: #5e6f82;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Trebuchet MS", "Gill Sans", "Franklin Gothic Medium", sans-serif;
+        color: #eaf4ff;
+        background:
+          radial-gradient(1200px 600px at 110% -10%, #2d7fb8 0%, transparent 45%),
+          radial-gradient(900px 500px at -20% 120%, #0a7f79 0%, transparent 42%),
+          linear-gradient(130deg, var(--bg-1), var(--bg-2));
+        display: grid;
+        place-items: center;
+        padding: 28px;
+      }
+
+      .panel {
+        width: min(980px, 100%);
+        border-radius: 24px;
+        background: rgba(8, 18, 30, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(7px);
+        box-shadow: 0 26px 70px rgba(0, 0, 0, 0.35);
+        overflow: hidden;
+      }
+
+      .hero {
+        padding: 34px 34px 22px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .kicker {
+        margin: 0;
+        letter-spacing: 0.14em;
+        font-size: 12px;
+        text-transform: uppercase;
+        opacity: 0.9;
+      }
+
+      h1 {
+        margin: 10px 0 12px;
+        font-family: "Palatino Linotype", "Book Antiqua", serif;
+        font-size: clamp(30px, 5.5vw, 52px);
+        line-height: 1.04;
+      }
+
+      .lead {
+        margin: 0;
+        color: #cce0f7;
+        font-size: 17px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        padding: 22px 22px 28px;
+      }
+
+      .card {
+        background: var(--card);
+        color: var(--ink);
+        border-radius: 18px;
+        padding: 16px;
+        transform: translateY(16px);
+        opacity: 0;
+        animation: rise 0.7s ease forwards;
+      }
+
+      .card:nth-child(2) { animation-delay: 0.08s; }
+      .card:nth-child(3) { animation-delay: 0.16s; }
+      .card:nth-child(4) { animation-delay: 0.24s; }
+      .card:nth-child(5) { animation-delay: 0.32s; }
+      .card:nth-child(6) { animation-delay: 0.4s; }
+
+      .card h2 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+
+      .metric {
+        font-family: "Consolas", "Courier New", monospace;
+        font-size: 28px;
+        font-weight: 700;
+        margin: 2px 0 4px;
+      }
+
+      .ok { color: var(--accent); }
+      .warn { color: #e58d2c; }
+      .info { color: var(--accent-2); }
+
+      .meta {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 0 24px 20px;
+        color: #b7cae0;
+        font-size: 13px;
+      }
+
+      .pill {
+        padding: 7px 11px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      @keyframes rise {
+        to { transform: translateY(0); opacity: 1; }
+      }
+
+      @media (max-width: 900px) {
+        .grid { grid-template-columns: 1fr 1fr; }
+      }
+
+      @media (max-width: 620px) {
+        .hero { padding: 24px 20px 16px; }
+        .grid { grid-template-columns: 1fr; padding: 16px 16px 20px; }
+        .footer { flex-direction: column; align-items: flex-start; padding: 0 16px 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="panel">
+      <section class="hero">
+        <p class="kicker">MedAssist • Observabilite</p>
+        <h1>Centre de controle<br/>Monitoring & Resilience</h1>
+        <p class="lead">Dashboards Grafana, alerting Prometheus/Alertmanager, logs ELK et supervision des sauvegardes MySQL.</p>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Etat API</h2>
+          <p class="metric ok">3 / 3</p>
+          <p class="meta">Instances backend actives</p>
+        </article>
+        <article class="card">
+          <h2>Prometheus</h2>
+          <p class="metric info">UP</p>
+          <p class="meta">Scrape en cours toutes les 15s</p>
+        </article>
+        <article class="card">
+          <h2>Alertmanager</h2>
+          <p class="metric ok">Route P1-P4</p>
+          <p class="meta">Routage webhook operationnel</p>
+        </article>
+        <article class="card">
+          <h2>Sauvegarde MySQL</h2>
+          <p class="metric ok">OK</p>
+          <p class="meta">Pushgateway: status, size, timestamp</p>
+        </article>
+        <article class="card">
+          <h2>Logs ELK</h2>
+          <p class="metric info">Ingest</p>
+          <p class="meta">Filebeat vers Elasticsearch/Kibana</p>
+        </article>
+        <article class="card">
+          <h2>Risque 5xx</h2>
+          <p class="metric warn">Surveille</p>
+          <p class="meta">RED dashboard + alertes de seuil</p>
+        </article>
+      </section>
+
+      <footer class="footer">
+        <span class="pill">Frontend TP valide</span>
+        <span>http://localhost:3000 (Grafana) • http://localhost:9090 (Prometheus) • http://localhost:5601 (Kibana)</span>
+      </footer>
+    </main>
+  </body>
+</html>
